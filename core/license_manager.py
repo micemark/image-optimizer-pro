@@ -42,13 +42,27 @@ class LicenseManager:
   n=datetime.now().isoformat()
   return{"app_name":"ImageOptimizer Pro","version":"1.2","first_run":n,"last_run":n,"license_key":None,"license_active":False,"machine_id":self._a,"run_count":1,"trial_days":15,"created":n,"_checksum":""}
  def _h(self):
-  any_exist=any(fp.exists()for fp in self._e)
-  if any_exist:return
-  dd=self._l();dd["_checksum"]=self._k(dd)
+  existing_data=None
+  for fp in self._e:
+   try:
+    if not fp.exists():continue
+    with open(fp,'r',encoding='utf-8')as f:ed=f.read().strip()
+    dd=self._j(ed)
+    if not dd:continue
+    d=json.loads(dd)
+    if d.get('_checksum')!=self._k(d):continue
+    if d.get('app_name')!="ImageOptimizer Pro":continue
+    existing_data=d
+    break
+   except:continue
+  if not existing_data:
+   existing_data=self._l()
+   existing_data["_checksum"]=self._k(existing_data)
+  ed=self._i(json.dumps(existing_data,indent=2))
   for fp in self._e:
    try:
     fp.parent.mkdir(parents=True,exist_ok=True)
-    with open(fp,'w',encoding='utf-8')as f:f.write(self._i(json.dumps(dd,indent=2)))
+    with open(fp,'w',encoding='utf-8')as f:f.write(ed)
    except:continue
  def _m(self,fp):
   try:

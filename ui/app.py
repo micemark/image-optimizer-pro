@@ -580,7 +580,7 @@ class App:
         # Crear ventana de diálogo
         about_window = tk.Toplevel(self.root)
         about_window.title("Acerca de - ImageOptimizer Pro")
-        about_window.geometry("500x400")
+        about_window.geometry("500x300")
         about_window.resizable(False, False)
         
         # Centrar la ventana
