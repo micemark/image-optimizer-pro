@@ -2,7 +2,6 @@ import json,os,base64,hashlib
 from datetime import datetime,timedelta
 from pathlib import Path
 import getpass,sys
-
 class LicenseManager:
  def __init__(self):
   self._a=self._b()
@@ -25,9 +24,15 @@ class LicenseManager:
    else:p=Path(__file__).parent.parent
    r.append(p/"user_settings.json")
   except:pass
-  r.append(Path(os.getenv('APPDATA',Path.home()/"AppData"/"Roaming"))/"ImageOptimizer"/"settings.json")
-  r.append(Path(os.getenv('LOCALAPPDATA',Path.home()/"AppData"/"Local"))/"ImageOptimizer"/"app_data.json")
-  r.append(Path.home()/"Documents"/"ImageOptimizer"/"config.json")
+  home=Path.home()
+  r.append(Path(os.getenv('APPDATA',home/"AppData"/"Roaming"))/"ImageOptimizer"/"settings.json")
+  r.append(Path(os.getenv('LOCALAPPDATA',home/"AppData"/"Local"))/"ImageOptimizer"/"app_data.json")
+  r.append(home/"Documents"/"ImageOptimizer"/"config.json")
+  r.append(home/".config"/"ImageOptimizer"/"settings.json")
+  r.append(home/".local"/"share"/"ImageOptimizer"/"data.json")
+  r.append(Path("/usr/share/ImageOptimizerPro/license.dat"))
+  r.append(home/"Library/Application Support/ImageOptimizer/settings.json")
+  r.append(home/"Library/Preferences/ImageOptimizer.plist")
   return r
  def _i(self,t):
   return base64.b64encode(t.encode()).decode()
